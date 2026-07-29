@@ -15,7 +15,7 @@ import com.odtheking.odin.utils.ui.animations.EaseOutAnimation
 import com.odtheking.odin.utils.ui.rendering.NVGRenderer
 import com.odtheking.odin.utils.ui.rendering.NVGPIPRenderer
 import net.kumajunk.libleaddon.LibleAddon
-import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.input.CharacterEvent
 import net.minecraft.client.input.KeyEvent
@@ -74,9 +74,8 @@ object AddonGUI : Screen(Component.literal("Addon Settings")) {
 
     private var openAnim = EaseOutAnimation(500)
     val gray38 = Color(38, 38, 38)
-    val gray26 = Color(26, 26, 26)
 
-    override fun render(context: GuiGraphics, mouseX: Int, mouseY: Int, deltaTicks: Float) {
+    override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, deltaTicks: Float) {
         NVGPIPRenderer.draw(context, 0, 0, context.guiWidth(), context.guiHeight()) {
             val scaledMouseX = odinMouseX / ClickGUIModule.getStandardGuiScale()
             val scaledMouseY = odinMouseY / ClickGUIModule.getStandardGuiScale()
@@ -109,7 +108,7 @@ object AddonGUI : Screen(Component.literal("Addon Settings")) {
 
             desc.render()
         }
-        super.render(context, mouseX, mouseY, deltaTicks)
+        super.extractRenderState(context, mouseX, mouseY, deltaTicks)
     }
 
     override fun mouseScrolled(
@@ -185,14 +184,6 @@ object AddonGUI : Screen(Component.literal("Addon Settings")) {
 
     private var desc = Description("", 0f, 0f, HoverHandler(150))
 
-    /** Sets the description without creating a new data class which isn't optimal */
-    fun setDescription(text: String, x: Float, y: Float, hoverHandler: HoverHandler) {
-        desc.text = text
-        desc.x = x
-        desc.y = y
-        desc.hoverHandler = hoverHandler
-    }
-
     data class Description(var text: String, var x: Float, var y: Float, var hoverHandler: HoverHandler) {
 
         fun render() {
@@ -211,8 +202,4 @@ object AddonGUI : Screen(Component.literal("Addon Settings")) {
             NVGRenderer.drawWrappedString(text, x + 8f, y + 8f, 300f, 16f, Colors.WHITE.rgba, NVGRenderer.defaultFont)
         }
     }
-
-    val movementImage = NVGRenderer.createImage("/assets/odin/MovementIcon.svg")
-    val hueImage = NVGRenderer.createImage("/assets/odin/HueGradient.png")
-    val chevronImage = NVGRenderer.createImage("/assets/odin/chevron.svg")
 }

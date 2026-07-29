@@ -2,7 +2,7 @@ package net.kumajunk.libleaddon.features.impl.boss
 
 import com.odtheking.odin.clickgui.settings.impl.ColorSetting
 import com.odtheking.odin.events.ChatPacketEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.utils.Color
@@ -65,7 +65,7 @@ object PurplePad : Module(
         }
 
         // ワールドアンロード時にリセット
-        on<WorldEvent.Unload> {
+        on<LevelEvent.Unload> {
             purplePadEndTime = 0L
             isTimerActive = false
         }

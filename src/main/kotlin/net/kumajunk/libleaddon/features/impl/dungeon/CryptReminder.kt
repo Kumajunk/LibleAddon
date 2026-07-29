@@ -6,7 +6,7 @@ import com.odtheking.odin.clickgui.settings.impl.DropdownSetting
 import com.odtheking.odin.clickgui.settings.impl.NumberSetting
 import com.odtheking.odin.events.ChatPacketEvent
 import com.odtheking.odin.events.TickEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.utils.Colors
@@ -137,7 +137,7 @@ object CryptReminder : Module(
         }
 
         // ワールドアンロード時にリセット
-        on<WorldEvent.Unload> {
+        on<LevelEvent.Unload> {
             isSearch = false
             hideTitle = false
             isReminded = false

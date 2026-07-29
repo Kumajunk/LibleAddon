@@ -14,19 +14,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class LivingEntityRendererMixin {
 
     @Inject(
-            method = "extractRenderState",
+            method = "extractRenderState*",
             at = @At("HEAD")
     )
     private void onExtractRenderState(
             LivingEntity entity,
-            LivingEntityRenderState renderState,
-            float partialTick,
+            LivingEntityRenderState state,
+            float partialTicks,
             CallbackInfo ci
     ) {
-        if (!(renderState instanceof HideArmorState state)) {
+        if (!(state instanceof HideArmorState hideState)) {
             return;
         }
 
-        state.libleaddon$setHideArmor(HideArmor.shouldHide(entity));
+        hideState.libleaddon$setHideArmor(HideArmor.shouldHide(entity));
     }
 }

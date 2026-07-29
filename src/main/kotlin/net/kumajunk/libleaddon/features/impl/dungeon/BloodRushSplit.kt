@@ -1,20 +1,18 @@
 package net.kumajunk.libleaddon.features.impl.dungeon
 
 import com.odtheking.odin.clickgui.settings.impl.BooleanSetting
-import com.odtheking.odin.events.TickEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.events.core.onReceive
 import com.odtheking.odin.features.Module
+import com.odtheking.odin.features.impl.dungeon.map.DungeonScan
 import com.odtheking.odin.features.impl.dungeon.map.SpecialColumn
+import com.odtheking.odin.features.impl.dungeon.map.tile.DungeonRoom
+import com.odtheking.odin.features.impl.dungeon.map.tile.RoomType
 import com.odtheking.odin.utils.noControlCodes
-import com.odtheking.odin.utils.skyblock.dungeon.tiles.RoomType
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents
-import net.kumajunk.libleaddon.features.impl.dungeon.map.DungMap
-import net.kumajunk.libleaddon.features.impl.dungeon.map.MapScanner
 import net.minecraft.network.chat.Component
-import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket
+import java.util.ArrayDeque
 
 /**
  * Blood Rush中のスプリットタイムを計測・表示するモジュール
@@ -36,23 +34,11 @@ object BloodRushSplit : Module(
 
     init {
         // ワールドロード時にリセット
-        on<WorldEvent.Load> { reset() }
-
-        on<TickEvent.End> {
-            MapScanner.scan(world)
-        }
-
-        ClientChunkEvents.CHUNK_LOAD.register { _, _ ->
-            DungMap.onChunkLoad()
-        }
-
-        onReceive<ClientboundMapItemDataPacket> {
-            DungMap.rescanMapItem(this)
-        }
+        on<LevelEvent.Load> { reset() }
 
         // チャットメッセージ検知
         onReceive<ClientboundSystemChatPacket> {
-            val msg = content.string?.noControlCodes ?: return@onReceive
+            val msg = content.string.noControlCodes
 
             // Blood Rush開始（Mortのメッセージ）
             if (msg.contains("Mort:") && msg.contains("I found this map")) {
@@ -70,7 +56,7 @@ object BloodRushSplit : Module(
                 clearTimes.add(System.currentTimeMillis() - brStart)
 
                 // ルート計算
-                val route = MapScanner.getRouteBetween(RoomType.ENTRANCE, RoomType.BLOOD)
+                val route = getBloodRushRoute()
                     .filter { it !in omitRooms }
                 rooms.addAll(route)
 
@@ -78,6 +64,40 @@ object BloodRushSplit : Module(
                 reset()
             }
         }
+    }
+
+    private fun getBloodRushRoute(): List<String> {
+        val fromRoom = DungeonScan.rooms.find { it.type == RoomType.ENTRANCE } ?: return emptyList()
+        val toRoom = DungeonScan.rooms.find { it.type == RoomType.BLOOD } ?: return emptyList()
+
+        val visited = mutableSetOf<DungeonRoom>()
+        val queue = ArrayDeque<Pair<DungeonRoom, List<DungeonRoom>>>()
+        queue.add(fromRoom to listOf(fromRoom))
+
+        while (queue.isNotEmpty()) {
+            val (current, path) = queue.removeFirst()
+            if (current == toRoom) {
+                return path.mapNotNull { it.name }
+            }
+            if (current in visited) continue
+            visited.add(current)
+
+            for ((_, door) in DungeonScan.doors) {
+                val originRoom = DungeonScan.tiles.getOrNull(door.originTileIndex)?.room
+                val destRoom = DungeonScan.tiles.getOrNull(door.destinationTileIndex)?.room
+                if (originRoom == null || destRoom == null) continue
+
+                val adjacentRooms = listOf(originRoom, destRoom)
+                if (current !in adjacentRooms) continue
+
+                for (neighbor in adjacentRooms) {
+                    if (neighbor != current && neighbor !in visited) {
+                        queue.add(neighbor to (path + neighbor))
+                    }
+                }
+            }
+        }
+        return emptyList()
     }
 
     /**
@@ -96,7 +116,7 @@ object BloodRushSplit : Module(
             if (showTotalTime) append("\n§b§lTotal Time§f: ${String.format("%.2f", (clearTimes.last() / 1000.0))}s \n")
             append("§f§m------------------------------§r\n")
         }
-        mc.execute { mc.gui?.chat?.addMessage(Component.literal(message)) }
+        mc.execute { mc.gui.chat.addClientSystemMessage(Component.literal(message)) }
     }
 
     /**
@@ -104,8 +124,6 @@ object BloodRushSplit : Module(
      */
     private fun reset() {
         SpecialColumn.unload()
-        MapScanner.unload()
-        DungMap.unload()
         rooms.clear()
         clearTimes.clear()
         brStart = 0L

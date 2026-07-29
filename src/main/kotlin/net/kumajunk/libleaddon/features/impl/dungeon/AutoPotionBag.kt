@@ -1,7 +1,7 @@
 package net.kumajunk.libleaddon.features.impl.dungeon
 
 import com.odtheking.odin.events.TickEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.utils.skyblock.dungeon.DungeonUtils
@@ -14,7 +14,7 @@ object AutoPotionBag : Module(
     private var bagOpened = false
 
     init {
-        on<WorldEvent.Load> {
+        on<LevelEvent.Load> {
             bagOpened = false
         }
 

@@ -8,7 +8,7 @@ fun addonMessage(message: Any?, chatStyle: Style? = null) {
     val prefix = "§b[§fLA§b] §r"
     val text = Component.literal("$prefix$message")
     chatStyle?.let { text.setStyle(chatStyle) }
-    mc.execute { mc.gui?.chat?.addMessage(text) }
+    mc.execute { mc.gui.chat.addClientSystemMessage(text) }
 }
 
 /**
@@ -18,16 +18,16 @@ fun addonMessage(message: Any?, chatStyle: Style? = null) {
 fun addonMessage(component: Component) {
     val prefix = "§b[§fLA§b] §r"
     val text = Component.literal(prefix).append(component)
-    mc.execute { mc.gui?.chat?.addMessage(text) }
+    mc.schedule { mc.gui.chat.addClientSystemMessage(text) }
 }
 
 /**
  * プレフィックスなしでメッセージを送信
  * @param message 送信するメッセージ
  */
-fun sendMessage(message: Any?) {
+fun sendMessage(message: Any) {
     val text = Component.literal("$message")
-    mc.execute { mc.gui?.chat?.addMessage(text) }
+    mc.execute { mc.gui.chat.addClientSystemMessage(text) }
 }
 
 /**
@@ -35,5 +35,5 @@ fun sendMessage(message: Any?) {
  * ホバーイベント等のスタイルを保持したまま表示可能
  */
 fun sendMessage(component: Component) {
-    mc.execute { mc.gui?.chat?.addMessage(component) }
+    mc.execute { mc.gui.chat.addClientSystemMessage(component) }
 }

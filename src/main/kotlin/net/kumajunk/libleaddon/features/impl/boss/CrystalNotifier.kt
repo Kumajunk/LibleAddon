@@ -3,7 +3,7 @@ package net.kumajunk.libleaddon.features.impl.boss
 import com.odtheking.odin.clickgui.settings.impl.BooleanSetting
 import com.odtheking.odin.clickgui.settings.impl.ColorSetting
 import com.odtheking.odin.events.ChatPacketEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.utils.Color
@@ -56,7 +56,7 @@ object CrystalNotifier : Module(
         } else {
             // P1フェーズ中のみチェック
             val player = mc.player ?: return@HUD 0 to 0
-            val inventory = player.inventory ?: return@HUD 0 to 0
+            val inventory = player.inventory
 
             // スロット8（ホットバー右端）のアイテムをチェック
             val item = inventory.getItem(8)
@@ -86,7 +86,7 @@ object CrystalNotifier : Module(
         }
 
         // ワールドアンロード時にリセット
-        on<WorldEvent.Unload> {
+        on<LevelEvent.Unload> {
             isP1 = false
         }
     }

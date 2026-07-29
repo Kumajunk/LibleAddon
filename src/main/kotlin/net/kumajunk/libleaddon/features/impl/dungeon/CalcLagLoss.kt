@@ -1,7 +1,7 @@
 package net.kumajunk.libleaddon.features.impl.dungeon
 
 import com.odtheking.odin.events.TickEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.events.core.onReceive
 import com.odtheking.odin.features.Module
@@ -19,14 +19,14 @@ object CalcLagLoss : Module(
     val regex = Regex("""\s*Team Score:.*""")
 
     init {
-        on<WorldEvent.Load>() {
+        on<LevelEvent.Load>() {
             startTime = 0L
             finishTime = 0L
             notLagTime = 0L
         }
 
         onReceive<ClientboundSystemChatPacket> {
-            val msg = content.string?.noControlCodes ?: return@onReceive
+            val msg = content.string.noControlCodes
             if (msg.contains("Mort:") && msg.contains("I found this map")) {
                 startTime = System.currentTimeMillis()
                 return@onReceive

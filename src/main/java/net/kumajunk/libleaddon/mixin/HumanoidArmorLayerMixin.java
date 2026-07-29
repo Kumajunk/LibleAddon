@@ -24,12 +24,12 @@ public class HumanoidArmorLayerMixin {
             PoseStack poseStack,
             SubmitNodeCollector submitNodeCollector,
             ItemStack itemStack,
-            EquipmentSlot equipmentSlot,
-            int i,
-            S humanoidRenderState,
+            EquipmentSlot slot,
+            int lightCoords,
+            S state,
             CallbackInfo ci
     ) {
-        if (((HideArmorState) humanoidRenderState).libleaddon$isHideArmor()) {
+        if (((HideArmorState) state).libleaddon$isHideArmor()) {
             ci.cancel();
         }
     }

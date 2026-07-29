@@ -95,7 +95,7 @@ object Soulflow : Module(
     private fun updateSoulflowFromAPI() {
         if (isUpdating) return
         
-        val name = mc.user?.name?.takeIf { !it.matches(Regex("Player\\d{2,3}")) } ?: return
+        val name = mc.user.name.takeIf { !it.matches(Regex("Player\\d{2,3}")) } ?: return
         
         isUpdating = true
         scope.launch {

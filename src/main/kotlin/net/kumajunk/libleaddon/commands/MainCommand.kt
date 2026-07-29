@@ -51,7 +51,7 @@ val profileViewerCommand: Commodore = Commodore("lapv") {
 
     // No arguments: show your own stats
     runs {
-        val name = mc.user?.name ?: return@runs addonMessage("§cFailed to get player name!")
+        val name = mc.user.name
         addonMessage("§aFetching dungeon stats for §6$name§a...")
         scope.launch {
             fetchCataStats(RequestUtils.getProfile(name))

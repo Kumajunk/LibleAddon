@@ -2,7 +2,7 @@ package net.kumajunk.libleaddon.features.impl.dungeon
 
 import com.odtheking.odin.clickgui.settings.impl.StringSetting
 import com.odtheking.odin.events.TickEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.events.core.onReceive
 import com.odtheking.odin.features.Module
@@ -67,11 +67,11 @@ object WarpCooldown : Module(
 
     init {
         // ワールドアンロード時にリセット
-        on<WorldEvent.Unload> { reset() }
+        on<LevelEvent.Unload> { reset() }
 
         // チャットメッセージでダンジョン入室を検知
         onReceive<ClientboundSystemChatPacket> {
-            val msg = content.string?.noControlCodes ?: return@onReceive
+            val msg = content.string.noControlCodes
 
             // ダンジョン入室メッセージをチェック
             if (dungeonEntryRegex.matches(msg)) {

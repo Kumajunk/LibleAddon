@@ -5,13 +5,14 @@ import com.odtheking.odin.clickgui.settings.impl.ColorSetting
 import com.odtheking.odin.events.BlockUpdateEvent
 import com.odtheking.odin.events.ChatPacketEvent
 import com.odtheking.odin.events.RenderEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.events.core.onReceive
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.utils.Color.Companion.withAlpha
 import com.odtheking.odin.utils.Colors
 import com.odtheking.odin.utils.alert
+import com.odtheking.odin.utils.noControlCodes
 import com.odtheking.odin.utils.render.drawFilledBox
 import com.odtheking.odin.utils.skyblock.dungeon.DungeonUtils
 import com.odtheking.odin.utils.skyblock.dungeon.M7Phases
@@ -69,7 +70,7 @@ object I4Helper : Module(
         onReceive<ClientboundSetSubtitleTextPacket> {
             if (!hideTitles || !isInPosition || DungeonUtils.getF7Phase() != M7Phases.P3) return@onReceive
 
-            val titleText = text?.string ?: return@onReceive
+            val titleText = text.string.noControlCodes
             val regex = Regex(".* (completed a device!|activated a terminal!|activated a lever!) \\(\\d/\\d\\)|The gate will open in 5 seconds!|The gate has been destroyed!")
 
             if (regex.containsMatchIn(titleText)) {
@@ -89,7 +90,7 @@ object I4Helper : Module(
             }
         }
 
-        on<WorldEvent.Load> {
+        on<LevelEvent.Load> {
             notified = false
             highlighted.fill(0)
         }

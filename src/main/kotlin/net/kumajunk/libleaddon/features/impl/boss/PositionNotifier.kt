@@ -2,7 +2,7 @@ package net.kumajunk.libleaddon.features.impl.boss
 
 import com.odtheking.odin.events.ChatPacketEvent
 import com.odtheking.odin.events.TickEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.utils.noControlCodes
@@ -56,7 +56,7 @@ object  PositionNotifier : Module(
             messageText = "At P2!",
             // Phase 1 & Healer以外
             checkCondition = { phase, clazz, _ ->
-                phase == M7Phases.P1 && clazz != DungeonClass.Healer
+                phase == M7Phases.P1 && clazz != DungeonClass.HEALER
             },
             // Y座標が164〜205の範囲
             checkPosition = { _, y, _, _ -> y < 205 && y > 164 }
@@ -150,7 +150,7 @@ object  PositionNotifier : Module(
             box = PositionBox(91.0, 129.0, 44.0, 93.0, 133.0, 46.0),
             messageText = "At Pre4 Entry!",
             checkCondition = { phase, clazz, _ ->
-                (phase == M7Phases.P2 || phase == M7Phases.P3) && clazz != DungeonClass.Healer
+                (phase == M7Phases.P2 || phase == M7Phases.P3) && clazz != DungeonClass.HEALER
             }
         ),
 
@@ -161,7 +161,7 @@ object  PositionNotifier : Module(
             messageText = "At P5!",
             // Phase 4 & Healerのみ
             checkCondition = { phase, clazz, _ ->
-                phase == M7Phases.P4 && clazz == DungeonClass.Healer
+                phase == M7Phases.P4 && clazz == DungeonClass.HEALER
             },
             // Y座標が4〜50の範囲
             checkPosition = { _, y, _, _ -> y < 50 && y > 4 }
@@ -235,7 +235,7 @@ object  PositionNotifier : Module(
         }
 
         // ワールドアンロード時にリセット
-        on<WorldEvent.Unload> {
+        on<LevelEvent.Unload> {
             reset()
         }
     }

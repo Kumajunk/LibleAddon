@@ -5,7 +5,7 @@ import com.odtheking.odin.clickgui.settings.impl.ColorSetting
 import com.odtheking.odin.events.PacketEvent
 import com.odtheking.odin.events.RenderEvent
 import com.odtheking.odin.events.TickEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.utils.Color
@@ -122,7 +122,7 @@ object StarMobHighlight : Module(
 
     init {
         // ワールドアンロード時にデータをクリア
-        on<WorldEvent.Unload> {
+        on<LevelEvent.Unload> {
             checkedArmorStands.clear()
             tickScannedArmorStands.clear()
             starMobs.clear()
@@ -209,7 +209,7 @@ object StarMobHighlight : Module(
         if (armorStand.id in checkedArmorStands) return
         checkedArmorStands.add(armorStand.id)
 
-        val world = armorStand.level() ?: return
+        val world = armorStand.level()
         val name = armorStand.customName?.string?.uppercase() ?: return
 
         // ウィザーマンサーは常に -3（間に2つのスカルがある）
@@ -301,7 +301,7 @@ object StarMobHighlight : Module(
     }
 
     private fun RenderEvent.Extract.drawNormalHighlight(entity: Entity, color: Color, isFilled: Boolean) {
-        val box = entity.boundingBox ?: return
+        val box = entity.boundingBox
         drawWireFrameBox(box, color, 1f, true)
         if (isFilled) {
             color.withAlpha(0.3f, false)

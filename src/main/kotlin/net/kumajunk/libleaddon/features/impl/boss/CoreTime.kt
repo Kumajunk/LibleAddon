@@ -2,7 +2,7 @@ package net.kumajunk.libleaddon.features.impl.boss
 
 import com.odtheking.odin.events.ChatPacketEvent
 import com.odtheking.odin.events.TickEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.utils.sendCommand
@@ -36,7 +36,7 @@ object CoreTime : Module(
 
     init {
         // ワールドアンロード時にリセット
-        on<WorldEvent.Unload> { reset() }
+        on<LevelEvent.Unload> { reset() }
 
         // Core開放メッセージ検出
         on<ChatPacketEvent> {
@@ -61,7 +61,7 @@ object CoreTime : Module(
 
             // ワールド内の全プレイヤーをチェック
             world.players().forEach { player ->
-                val playerName = player.gameProfile?.name ?: return@forEach
+                val playerName = player.gameProfile.name ?: return@forEach
 
                 // 既に記録済みのプレイヤーはスキップ
                 if (playersInCore.containsKey(playerName)) return@forEach

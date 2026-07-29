@@ -5,7 +5,7 @@ import com.odtheking.odin.clickgui.settings.impl.ColorSetting
 import com.odtheking.odin.clickgui.settings.impl.DropdownSetting
 import com.odtheking.odin.clickgui.settings.impl.NumberSetting
 import com.odtheking.odin.events.ChatPacketEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.utils.Color
@@ -17,7 +17,7 @@ import com.odtheking.odin.utils.playSoundSettings
 import com.odtheking.odin.utils.render.textDim
 import com.odtheking.odin.utils.skyblock.dungeon.DungeonUtils
 import net.kumajunk.libleaddon.LibleAddon.playerName
-import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.GuiGraphicsExtractor
 
 object PreEnterNotifier : Module(
     name = "Pre Enter Notifier(LA)",
@@ -130,7 +130,7 @@ object PreEnterNotifier : Module(
                         }
                     }
                     if (classNotify) {
-                        val playerClass = DungeonUtils.dungeonTeammates.find { it.name === player } ?: return@on
+                        val playerClass = DungeonUtils.dungeonTeammates.find { it.name == player } ?: return@on
                         melodyMessage = "[${playerClass.clazz.name[0]}] $player Has Melody! ($progress)"
                     } else {
                         melodyMessage = "$player Has Melody! ($progress)"
@@ -143,7 +143,7 @@ object PreEnterNotifier : Module(
         }
 
         // World Unload Reset
-        on<WorldEvent.Unload> {
+        on<LevelEvent.Unload> {
             isP2 = false
             drawEEHud = false
             drawMelodyHud = false
@@ -159,7 +159,7 @@ object PreEnterNotifier : Module(
      * @param color テキストの色
      * @return テキストの幅と高さのペア
      */
-    private fun GuiGraphics.textDimCentered(text: String, x: Int, y: Int, color: Color, isCenter: Boolean): Pair<Int, Int> {
+    private fun GuiGraphicsExtractor.textDimCentered(text: String, x: Int, y: Int, color: Color, isCenter: Boolean): Pair<Int, Int> {
         if (!isCenter) {
             return this.textDim(text, x, y, color)
         }

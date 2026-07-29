@@ -3,7 +3,7 @@ package net.kumajunk.libleaddon.features.impl.dungeon
 import com.odtheking.odin.clickgui.settings.impl.ColorSetting
 import com.odtheking.odin.clickgui.settings.impl.NumberSetting
 import com.odtheking.odin.events.TickEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.events.core.onReceive
 import com.odtheking.odin.features.Module
@@ -101,11 +101,11 @@ object MaskTimer : Module(
 
     init {
         // ワールドロード時にリセット
-        on<WorldEvent.Load> { reset() }
+        on<LevelEvent.Load> { reset() }
 
         // チャットメッセージで発動を検知
         onReceive<ClientboundSystemChatPacket> {
-            val msg = content.string?.noControlCodes ?: return@onReceive
+            val msg = content.string.noControlCodes
 
             // Bonzo Mask検知
             if (bonzoRegex.containsMatchIn(msg)) {

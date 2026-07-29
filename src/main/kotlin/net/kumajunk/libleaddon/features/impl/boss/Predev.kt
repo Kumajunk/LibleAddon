@@ -2,7 +2,7 @@ package net.kumajunk.libleaddon.features.impl.boss
 
 import com.odtheking.odin.events.ChatPacketEvent
 import com.odtheking.odin.events.TickEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.utils.noControlCodes
@@ -41,7 +41,7 @@ object Predev : Module(
                 // Healer以外ならリターン
                 val myName = LibleAddon.playerName ?: mc.user.name
                 val myClass = DungeonUtils.dungeonTeammates.find { it.name == myName }?.clazz
-                if (myClass != DungeonClass.Healer) return@on
+                if (myClass != DungeonClass.HEALER) return@on
 
                 predevSuccess = false
                 isPredev = true
@@ -93,7 +93,7 @@ object Predev : Module(
             }
         }
 
-        on<WorldEvent.Unload> {
+        on<LevelEvent.Unload> {
             predevSuccess = false
             isPredev = false
             startTime = 0

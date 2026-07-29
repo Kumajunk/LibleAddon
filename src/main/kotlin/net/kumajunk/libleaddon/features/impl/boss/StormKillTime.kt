@@ -3,7 +3,7 @@ package net.kumajunk.libleaddon.features.impl.boss
 import com.odtheking.odin.clickgui.settings.impl.BooleanSetting
 import com.odtheking.odin.clickgui.settings.impl.SelectorSetting
 import com.odtheking.odin.events.ChatPacketEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.utils.alert
@@ -92,7 +92,7 @@ object StormKillTime : Module(
         }
 
         // ワールドアンロード時にリセット
-        on<WorldEvent.Unload> {
+        on<LevelEvent.Unload> {
             crushTime.clear()
             totalTimes.clear()
             stormStartTime = 0L

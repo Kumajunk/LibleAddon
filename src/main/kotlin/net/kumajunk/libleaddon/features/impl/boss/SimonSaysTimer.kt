@@ -3,7 +3,7 @@ package net.kumajunk.libleaddon.features.impl.boss
 import com.odtheking.odin.clickgui.settings.impl.BooleanSetting
 import com.odtheking.odin.clickgui.settings.impl.NumberSetting
 import com.odtheking.odin.events.ChatPacketEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.utils.noControlCodes
@@ -21,11 +21,11 @@ object SimonSaysTimer : Module(
 ) {
     // クラスリスト (0: Healer, 1: Berserk, 2: Archer, 3: Mage, 4: Tank)
     private val classList = listOf(
-        DungeonClass.Healer,
-        DungeonClass.Berserk,
-        DungeonClass.Archer,
-        DungeonClass.Mage,
-        DungeonClass.Tank
+        DungeonClass.HEALER,
+        DungeonClass.BERSERK,
+        DungeonClass.ARCHER,
+        DungeonClass.MAGE,
+        DungeonClass.TANK
     )
 
     // 設定項目
@@ -95,7 +95,7 @@ object SimonSaysTimer : Module(
         }
 
         // ワールドアンロード時にリセット
-        on<WorldEvent.Unload> {
+        on<LevelEvent.Unload> {
             simonSaysStartTime = null
         }
     }

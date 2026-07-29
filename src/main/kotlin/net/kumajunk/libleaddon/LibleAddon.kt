@@ -13,8 +13,9 @@ import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.kumajunk.libleaddon.commands.addonCommand
 import net.kumajunk.libleaddon.commands.profileViewerCommand
-import net.kumajunk.libleaddon.features.impl.dungeon.*
 import net.kumajunk.libleaddon.features.impl.boss.*
+import net.kumajunk.libleaddon.features.impl.dungeon.*
+import net.kumajunk.libleaddon.features.impl.dungeon.map.DungeonMap
 import net.kumajunk.libleaddon.features.impl.render.HideArmor
 import net.kumajunk.libleaddon.features.impl.render.NoFire
 import net.kumajunk.libleaddon.features.impl.render.NoHurtCam
@@ -95,7 +96,7 @@ object LibleAddon : ClientModInitializer {
         // Register modules with ModuleManager
         ModuleManager.registerModules(ModuleConfig("LibleAddon.json"), *modules)
 
-        val name = mc.user?.name?.takeIf { !it.matches(Regex("Player\\d{2,3}")) } ?: return
+        val name = mc.user.name.takeIf { !it.matches(Regex("Player\\d{2,3}")) } ?: return
         scope.launch {
             getUuid(name)
                 .onSuccess { uuid ->

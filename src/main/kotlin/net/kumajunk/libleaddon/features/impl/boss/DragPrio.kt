@@ -8,7 +8,7 @@ import com.odtheking.odin.clickgui.settings.impl.SelectorSetting
 import com.odtheking.odin.events.BlockUpdateEvent
 import com.odtheking.odin.events.ChatPacketEvent
 import com.odtheking.odin.events.TickEvent
-import com.odtheking.odin.events.WorldEvent
+import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.events.core.onReceive
 import com.odtheking.odin.features.Module
@@ -96,7 +96,7 @@ object DragPrio : Module(
             currentTick++
         }
 
-        on<WorldEvent.Load> {
+        on<LevelEvent.Load> {
             DragonCheck.dragonHealthMap.clear()
             WitherDragonsEnum.reset()
         }

@@ -14,21 +14,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class CustomHeadLayerMixin {
 
     @Inject(
-            method = "submit",
+            method = "submit*",
             at = @At("HEAD"),
             cancellable = true
     )
     private void libleaddon$hideCustomHead(
             PoseStack poseStack,
             SubmitNodeCollector submitNodeCollector,
-            int light,
-            LivingEntityRenderState renderState,
-            float f,
-            float g,
+            int lightCoords,
+            LivingEntityRenderState state,
+            float yRot,
+            float xRot,
             CallbackInfo ci
     ) {
-        if (renderState instanceof HideArmorState state
-                && state.libleaddon$isHideArmor()) {
+        if (state instanceof HideArmorState hideState
+                && hideState.libleaddon$isHideArmor()) {
             ci.cancel();
         }
     }
