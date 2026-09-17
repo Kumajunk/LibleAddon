@@ -1,7 +1,7 @@
 package net.kumajunk.libleaddon.features.impl.skyblock
 
 import com.odtheking.odin.OdinMod.scope
-import com.odtheking.odin.events.ChatPacketEvent
+import com.odtheking.odin.events.MessageEvent
 import com.odtheking.odin.events.TickEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.events.core.onReceive
@@ -38,8 +38,8 @@ object Soulflow : Module(
     private var isUpdating = false
 
     init {
-        on<ChatPacketEvent> {
-            val msg = value.noControlCodes
+        on<MessageEvent.Chat> {
+            val msg = message.noControlCodes
             val regex = Regex("have a total of ([0-9,]+)⸎")
             val match = regex.find(msg)
 

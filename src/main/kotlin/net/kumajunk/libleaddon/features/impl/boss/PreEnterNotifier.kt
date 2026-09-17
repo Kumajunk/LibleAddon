@@ -4,7 +4,7 @@ import com.odtheking.odin.clickgui.settings.impl.BooleanSetting
 import com.odtheking.odin.clickgui.settings.impl.ColorSetting
 import com.odtheking.odin.clickgui.settings.impl.DropdownSetting
 import com.odtheking.odin.clickgui.settings.impl.NumberSetting
-import com.odtheking.odin.events.ChatPacketEvent
+import com.odtheking.odin.events.MessageEvent
 import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
@@ -69,8 +69,8 @@ object PreEnterNotifier : Module(
 
     init {
         // Boss Dialogue / Phase Detection
-        on<ChatPacketEvent> {
-            val msg = value.noControlCodes
+        on<MessageEvent.Chat> {
+            val msg = message.noControlCodes
             
             // Phase 2 Detection
             if (msg == "[BOSS] Storm: Pathetic Maxor, just like expected.") {
@@ -82,8 +82,8 @@ object PreEnterNotifier : Module(
         }
 
         // Player Chat Detection
-        on<ChatPacketEvent> {
-            val msg = value.noControlCodes
+        on<MessageEvent.Chat> {
+            val msg = message.noControlCodes
             
             // Regex for Party chat: Party > [Rank] User: Message or Party > User: Message
             val match = partyRegex.find(msg) ?: return@on

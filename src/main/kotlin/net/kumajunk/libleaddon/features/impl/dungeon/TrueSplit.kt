@@ -3,7 +3,7 @@ package net.kumajunk.libleaddon.features.impl.dungeon
 import com.odtheking.odin.OdinMod.scope
 import com.odtheking.odin.clickgui.settings.impl.BooleanSetting
 import com.odtheking.odin.clickgui.settings.impl.NumberSetting
-import com.odtheking.odin.events.ChatPacketEvent
+import com.odtheking.odin.events.MessageEvent
 import com.odtheking.odin.events.TickEvent
 import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
@@ -211,9 +211,9 @@ object TrueSplit : Module(
             }
         }
 
-        on<ChatPacketEvent> {
+        on<MessageEvent.Chat> {
             if (!inDungeons) return@on
-            val msg = value.noControlCodes
+            val msg = message.noControlCodes
             handleChat(msg)
         }
 

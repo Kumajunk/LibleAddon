@@ -1,6 +1,6 @@
 package net.kumajunk.libleaddon.features.impl.boss
 
-import com.odtheking.odin.events.ChatPacketEvent
+import com.odtheking.odin.events.MessageEvent
 import com.odtheking.odin.events.TickEvent
 import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
@@ -183,8 +183,8 @@ object  PositionNotifier : Module(
 
     init {
         // Storm撃破とターミナル完了を検知
-        on<ChatPacketEvent> {
-            val msg = value.noControlCodes
+        on<MessageEvent.Chat> {
+            val msg = message.noControlCodes
 
             // Storm撃破でStage 1に
             if (msg.contains(stormDefeatedPattern)) {

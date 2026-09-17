@@ -3,7 +3,7 @@ package net.kumajunk.libleaddon.features.impl.dungeon
 import com.odtheking.odin.clickgui.settings.impl.BooleanSetting
 import com.odtheking.odin.clickgui.settings.impl.ColorSetting
 import com.odtheking.odin.clickgui.settings.impl.DropdownSetting
-import com.odtheking.odin.events.ChatPacketEvent
+import com.odtheking.odin.events.MessageEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.utils.*
@@ -56,9 +56,9 @@ object ClassDupeNotifier : Module(
     }
 
     init {
-        on<ChatPacketEvent> {
+        on<MessageEvent.Chat> {
             if (!DungeonUtils.inDungeons) return@on
-            val msg = value.noControlCodes
+            val msg = message.noControlCodes
             if (msg.contains("Starting in") && !msg.contains("1")) {
                 val classes = checkDupeClass()
                 if (classes.isNotEmpty()) {

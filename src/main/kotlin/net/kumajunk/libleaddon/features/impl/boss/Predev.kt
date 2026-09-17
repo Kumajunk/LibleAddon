@@ -1,6 +1,6 @@
 package net.kumajunk.libleaddon.features.impl.boss
 
-import com.odtheking.odin.events.ChatPacketEvent
+import com.odtheking.odin.events.MessageEvent
 import com.odtheking.odin.events.TickEvent
 import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
@@ -33,8 +33,8 @@ object Predev : Module(
     private val ARROW_MAX = Triple(4.0, 125.0, 79.0)
 
     init {
-        on<ChatPacketEvent> {
-            val msg = value.noControlCodes
+        on<MessageEvent.Chat> {
+            val msg = message.noControlCodes
 
             // Start Timer
             if (msg.contains("[BOSS] Maxor: WELL")) {

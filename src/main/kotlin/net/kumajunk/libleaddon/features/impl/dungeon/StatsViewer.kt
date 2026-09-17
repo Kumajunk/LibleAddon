@@ -1,7 +1,7 @@
 package net.kumajunk.libleaddon.features.impl.dungeon
 
 import com.odtheking.odin.OdinMod.scope
-import com.odtheking.odin.events.ChatPacketEvent
+import com.odtheking.odin.events.MessageEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.utils.network.hypixelapi.RequestUtils
@@ -16,8 +16,8 @@ object StatsViewer : Module(
     private val pfRegex = Regex("^Party Finder > (?:\\[.{1,7}])? ?(.{1,16}) joined the dungeon group! \\(.*\\)$")
 
     init {
-        on<ChatPacketEvent> {
-            val msg = value.noControlCodes
+        on<MessageEvent.Chat> {
+            val msg = message.noControlCodes
             val (name) = pfRegex.find(msg)?.destructured ?: return@on
             if (name == mc.player?.name?.string) return@on
             scope.launch {

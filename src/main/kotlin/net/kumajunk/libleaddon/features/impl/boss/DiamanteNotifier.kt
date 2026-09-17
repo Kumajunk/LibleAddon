@@ -2,7 +2,7 @@ package net.kumajunk.libleaddon.features.impl.boss
 
 import com.odtheking.odin.clickgui.settings.impl.ColorSetting
 import com.odtheking.odin.clickgui.settings.impl.NumberSetting
-import com.odtheking.odin.events.ChatPacketEvent
+import com.odtheking.odin.events.MessageEvent
 import com.odtheking.odin.events.TickEvent
 import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
@@ -55,8 +55,8 @@ object DiamanteNotifier : Module(
 
     init {
         // Blood Doorが開いたメッセージを検知
-        on<ChatPacketEvent> {
-            val msg = value.noControlCodes
+        on<MessageEvent.Chat> {
+            val msg = message.noControlCodes
             if (msg.trim() == "The BLOOD DOOR has been opened!") {
                 isBloodOpen = true
             }

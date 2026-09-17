@@ -2,7 +2,7 @@ package net.kumajunk.libleaddon.features.impl.boss
 
 import com.odtheking.odin.clickgui.settings.impl.BooleanSetting
 import com.odtheking.odin.clickgui.settings.impl.ColorSetting
-import com.odtheking.odin.events.ChatPacketEvent
+import com.odtheking.odin.events.MessageEvent
 import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
@@ -74,8 +74,8 @@ object CrystalNotifier : Module(
 
     init {
         // Maxorのセリフ検知でP1開始
-        on<ChatPacketEvent> {
-            val msg = value.noControlCodes
+        on<MessageEvent.Chat> {
+            val msg = message.noControlCodes
             if (maxorPattern.matches(msg)) {
                 isP1 = true
             }

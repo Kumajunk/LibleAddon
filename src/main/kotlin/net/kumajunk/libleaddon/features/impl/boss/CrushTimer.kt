@@ -1,7 +1,7 @@
 package net.kumajunk.libleaddon.features.impl.boss
 
 import com.odtheking.odin.clickgui.settings.impl.ColorSetting
-import com.odtheking.odin.events.ChatPacketEvent
+import com.odtheking.odin.events.MessageEvent
 import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
@@ -55,8 +55,8 @@ object CrushTimer : Module(
 
     init {
         // Crushパターン検出でタイマー開始
-        on<ChatPacketEvent> {
-            val msg = value.noControlCodes
+        on<MessageEvent.Chat> {
+            val msg = message.noControlCodes
             if (crushPattern.matches(msg)) {
                 // 20tick = 1秒 (1000ms) のカウントダウン開始
                 crushEndTime = System.currentTimeMillis() + 1000L

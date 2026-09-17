@@ -1,6 +1,6 @@
 package net.kumajunk.libleaddon.features.impl.boss
 
-import com.odtheking.odin.events.ChatPacketEvent
+import com.odtheking.odin.events.MessageEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.clickgui.settings.impl.BooleanSetting
@@ -21,8 +21,8 @@ object I4Timer : Module(
     private val devicePattern = Regex("(\\w{1,16}) (activated|completed) a (lever|device|terminal)! \\((\\d)/([78])\\)")
 
     init {
-        on<ChatPacketEvent> {
-            val message = value.noControlCodes
+        on<MessageEvent.Chat> {
+            val message = message.noControlCodes
 
             if (goldorBossPattern.matcher(message).matches()) {
                 i4Start = System.currentTimeMillis()

@@ -15,7 +15,6 @@ import net.kumajunk.libleaddon.commands.addonCommand
 import net.kumajunk.libleaddon.commands.profileViewerCommand
 import net.kumajunk.libleaddon.features.impl.boss.*
 import net.kumajunk.libleaddon.features.impl.dungeon.*
-import net.kumajunk.libleaddon.features.impl.dungeon.map.DungeonMap
 import net.kumajunk.libleaddon.features.impl.render.HideArmor
 import net.kumajunk.libleaddon.features.impl.render.NoFire
 import net.kumajunk.libleaddon.features.impl.render.NoHurtCam
@@ -52,7 +51,6 @@ object LibleAddon : ClientModInitializer {
             CalcLagLoss,
             ClassDupeNotifier,
             CryptReminder,
-            DungeonMap,
             LeapAnnounce,
             MaskTimer,
             ScoreMilestone,

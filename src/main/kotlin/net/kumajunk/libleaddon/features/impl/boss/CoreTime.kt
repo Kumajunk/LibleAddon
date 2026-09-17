@@ -1,6 +1,6 @@
 package net.kumajunk.libleaddon.features.impl.boss
 
-import com.odtheking.odin.events.ChatPacketEvent
+import com.odtheking.odin.events.MessageEvent
 import com.odtheking.odin.events.TickEvent
 import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
@@ -39,15 +39,15 @@ object CoreTime : Module(
         on<LevelEvent.Unload> { reset() }
 
         // Core開放メッセージ検出
-        on<ChatPacketEvent> {
-            if (value.contains(coreOpeningPattern)) {
+        on<MessageEvent.Chat> {
+            if (message.contains(coreOpeningPattern)) {
                 reset()
                 coreOpenTime = System.currentTimeMillis()
                 isCoreOpened = true
             }
 
             // Goldor撃破メッセージ検出
-            if (goldorFinishPattern.matches(value)) {
+            if (goldorFinishPattern.matches(message)) {
                 announce()
                 isCoreOpened = false
             }

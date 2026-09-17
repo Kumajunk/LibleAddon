@@ -3,7 +3,7 @@ package net.kumajunk.libleaddon.features.impl.boss
 import com.odtheking.odin.clickgui.settings.impl.BooleanSetting
 import com.odtheking.odin.clickgui.settings.impl.ColorSetting
 import com.odtheking.odin.events.BlockUpdateEvent
-import com.odtheking.odin.events.ChatPacketEvent
+import com.odtheking.odin.events.MessageEvent
 import com.odtheking.odin.events.RenderEvent
 import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
@@ -78,11 +78,11 @@ object I4Helper : Module(
             }
         }
 
-        on<ChatPacketEvent> {
+        on<MessageEvent.Chat> {
             if (!isInPosition || notified) return@on
 
             val regex = Regex("(\\w{1,16}) (activated|completed) a (lever|device|terminal)! \\((\\d)/([78])\\)")
-            val match = regex.find(value) ?: return@on
+            val match = regex.find(message) ?: return@on
             val playerName = match.groupValues[1]
 
             if (playerName == mc.player?.name?.string) {

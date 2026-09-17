@@ -1,7 +1,7 @@
 package net.kumajunk.libleaddon.features.impl.boss
 
 import com.odtheking.odin.clickgui.settings.impl.NumberSetting
-import com.odtheking.odin.events.ChatPacketEvent
+import com.odtheking.odin.events.MessageEvent
 import com.odtheking.odin.events.core.on
 import com.odtheking.odin.features.Module
 import com.odtheking.odin.utils.handlers.schedule
@@ -39,10 +39,10 @@ object HidePlayerOnLeap : Module(
     }
 
     init {
-        on<ChatPacketEvent> {
+        on<MessageEvent.Chat> {
             val phase = getF7Phase()
             if (phase != M7Phases.P3 && phase != M7Phases.P4) return@on
-            val msg = value.noControlCodes
+            val msg = message.noControlCodes
             if (!leapRegex.containsMatchIn(msg)) return@on
 
             if (!enabled) return@on

@@ -4,7 +4,7 @@ import com.odtheking.odin.clickgui.settings.impl.BooleanSetting
 import com.odtheking.odin.clickgui.settings.impl.ColorSetting
 import com.odtheking.odin.clickgui.settings.impl.DropdownSetting
 import com.odtheking.odin.clickgui.settings.impl.NumberSetting
-import com.odtheking.odin.events.ChatPacketEvent
+import com.odtheking.odin.events.MessageEvent
 import com.odtheking.odin.events.TickEvent
 import com.odtheking.odin.events.LevelEvent
 import com.odtheking.odin.events.core.on
@@ -78,9 +78,9 @@ object CryptReminder : Module(
 
     init {
         // Mortのセリフでダンジョン開始を検知
-        on<ChatPacketEvent> {
+        on<MessageEvent.Chat> {
             if (!DungeonUtils.inDungeons) return@on
-            val msg = value.noControlCodes
+            val msg = message.noControlCodes
             if (msg.contains("Mort:") && msg.contains("I found this map")) {
                 isSearch = true
                 isReminded = false
